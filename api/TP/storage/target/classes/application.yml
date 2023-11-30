@@ -7,5 +7,5 @@ spring:
 nextu:
   filestore: /Users/andrekouame/projects/formations/nextu/cours/n4/api/storage/filestore/
   app:
-    jwtSecret: xhxhh137373ud
+    jwtSecret: xhxhh137373uddjshkjqshfkjqhkfhilieufizefhiu
     jwtExpirationMs: 86400000
