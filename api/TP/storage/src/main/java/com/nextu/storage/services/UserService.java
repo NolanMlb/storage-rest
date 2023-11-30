@@ -25,6 +25,15 @@ public class UserService {
         }
         return getUserGetDTO(user);
     }
+
+    public void update(User user){
+        userRepository.save(user);
+    }
+
+    public User findUserById(String id){
+        User user = userRepository.findById(id).orElse(null);
+        return user;
+    }
     public void saveFileByUserId(String userId,String fileName) throws Exception {
         User user = userRepository.findById(userId).orElse(null);
         if(user!=null){
@@ -32,12 +41,11 @@ public class UserService {
             file.setLabel(fileName);
             file.setDescription(fileName);
             FileData fileSaved = fileRepository.save(file);
-            user.addFile(fileSaved);
+            //user.addFile(fileSaved);
             userRepository.save(user);
         }else{
             throw new Exception("save file for the current user id"+userId+" encountered an error");
         }
-
     }
     public void deleteById(String id){
         User user = userRepository.findById(id).orElse(null);

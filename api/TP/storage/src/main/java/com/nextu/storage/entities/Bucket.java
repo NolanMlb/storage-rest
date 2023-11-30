@@ -1,12 +1,15 @@
 package com.nextu.storage.entities;
 
+import lombok.Data;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Version;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
 import java.time.OffsetDateTime;
 import java.util.List;
 
+@Data
 @Document
 public class Bucket {
     @Id
@@ -14,6 +17,13 @@ public class Bucket {
     private String label;
     private String description;
     private OffsetDateTime dateCreated;
-    @DocumentReference
+
+    @Version
+    private Long version;
+
+    /**
+     *
+     @DocumentReference
     private List<FileData> files;
+     **/
 }

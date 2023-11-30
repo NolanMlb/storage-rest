@@ -20,14 +20,12 @@ public class User {
     private String login;
     private String password;
     @DocumentReference
-    private List<FileData> files;
-    @DocumentReference
     private List<Bucket> buckets;
 
-    public void addFile(FileData fileData){
-        if(this.files==null){
-            this.files = new ArrayList<>();
+    public void addBucket(Bucket bucket){
+        if(this.buckets==null){
+            this.buckets = new ArrayList<>();
         }
-        this.files.add(fileData);
+        this.buckets.add(bucket);
     }
 }
