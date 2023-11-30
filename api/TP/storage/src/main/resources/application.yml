@@ -1,0 +1,11 @@
+spring:
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: storage
+nextu:
+  filestore: /Users/andrekouame/projects/formations/nextu/cours/n4/api/storage/filestore/
+  app:
+    jwtSecret: xhxhh137373ud
+    jwtExpirationMs: 86400000
