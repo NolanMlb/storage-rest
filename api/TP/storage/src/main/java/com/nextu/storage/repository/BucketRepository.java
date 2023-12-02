@@ -8,5 +8,4 @@ import java.util.Optional;
 public interface BucketRepository extends MongoRepository<Bucket,String> {
 
     Optional<Bucket> findByLabel(String label);
-
 }

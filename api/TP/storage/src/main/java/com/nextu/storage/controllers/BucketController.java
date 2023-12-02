@@ -13,6 +13,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import com.nextu.storage.entities.Bucket;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/api/buckets")
@@ -31,6 +33,14 @@ public class BucketController {
         user.addBucket(bucket);
         userService.update(user);
         return ResponseEntity.ok(null);
+    }
+
+    @GetMapping(value = "/", produces = { "application/json", "application/xml" })
+    public ResponseEntity<List<Bucket>> getBuckets() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        User user = userService.findUserById(userDetails.getId());
+        return ResponseEntity.ok(user.getBuckets());
     }
 
     @PutMapping(value = "/{bucketId}", produces = { "application/json", "application/xml" })
