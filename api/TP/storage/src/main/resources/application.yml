@@ -12,5 +12,4 @@ nextu:
 server:
   port: 8088
 react:
-  host: ${REACT_HOST:localhost}
-  port: ${REACT_PORT:8080}
+  host: ${REACT_HOST:}
