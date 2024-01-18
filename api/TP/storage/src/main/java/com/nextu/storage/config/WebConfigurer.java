@@ -14,6 +14,7 @@ public class WebConfigurer implements WebMvcConfigurer {
 
     @Value("${react.host}")
     private String authorizeUrl;
+    @Value("${react.port}")
     private String authorizedPort;
     @Override
     public void configureContentNegotiation(final ContentNegotiationConfigurer configurer) {

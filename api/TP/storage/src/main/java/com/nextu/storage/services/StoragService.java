@@ -40,14 +40,14 @@ public class StoragService {
         return copyFile(file);
     }
     private String copyFile(MultipartFile file) throws FileContentException {
-            var fileNameDest = FileUtils.generateStringFromDate(FileUtils.getExtension(file.getOriginalFilename()));
-            try {
-                Files.copy(file.getInputStream(), this.root.resolve(fileNameDest));
-                return fileNameDest;
-            } catch (Exception e) {
-                logger.error("exception happened when saving file {}",e.getMessage());
-                throw new FileContentException("Could not store the file. Error: " + e.getMessage());
-            }
+        var fileNameDest = FileUtils.generateStringFromDate(FileUtils.getExtension(file.getOriginalFilename()));
+        try {
+            Files.copy(file.getInputStream(), this.root.resolve(fileNameDest));
+            return fileNameDest;
+        } catch (Exception e) {
+            logger.error("exception happened when saving file {}",e.getMessage());
+            throw new FileContentException("Could not store the file. Error: " + e.getMessage());
+        }
     }
     public File load(String filename) throws IOException {
         return new File(SERVER_LOCATION + filename);

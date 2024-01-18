@@ -1,12 +1,12 @@
 services:
   app-react:
-    image: andrenextu/react:1.0.1
+    image: nolanmlb/app-react:1.0.2
     ports:
       - "80:80"
     depends_on:
       - app-java
   app-java:
-    image: andrenextu/app-java:1.0.1
+    image: nolanmlb/app-java:1.0.3
     depends_on:
       - mongodb
     ports:

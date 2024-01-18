@@ -5,7 +5,7 @@ spring:
       port: ${MONGO_PORT:27017}
       database: storage
 nextu:
-  filestore: /Users/nolan/Documents/WEBTECH COURS/SpringBoot/storage/filestore
+  filestore: /Users/nolan/Documents/webtech-cours/SpringBoot/computer-science-course/api/TP/storage/filestore/
   app:
     jwtSecret: xhxhh137373uddjshkjqshfkjqhkfhilieufizefhiu
     jwtExpirationMs: 86400000
@@ -13,4 +13,4 @@ server:
   port: 8088
 react:
   host: ${REACT_HOST:localhost}
-  port: ${REACT_PORT:8080}
+  port: ${REACT_PORT:5173}
