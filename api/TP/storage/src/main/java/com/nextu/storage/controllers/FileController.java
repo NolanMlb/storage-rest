@@ -1,6 +1,7 @@
 package com.nextu.storage.controllers;
 
 import com.nextu.storage.dto.UserGetDTO;
+import com.nextu.storage.entities.Bucket;
 import com.nextu.storage.services.FileService;
 import com.nextu.storage.services.StoragService;
 import com.nextu.storage.utils.FileUtils;

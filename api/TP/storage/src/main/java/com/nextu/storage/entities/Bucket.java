@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -21,9 +22,13 @@ public class Bucket {
     @Version
     private Long version;
 
-    /**
-     *
-     @DocumentReference
+    @DocumentReference
     private List<FileData> files;
-     **/
+
+    public void addFile(FileData file){
+        if(this.files==null){
+            this.files = new ArrayList<>();
+        }
+        this.files.add(file);
+    }
 }

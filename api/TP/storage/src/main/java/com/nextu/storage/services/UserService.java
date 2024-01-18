@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
-    private final FileRepository fileRepository;
     public UserGetDTO create(User user){
         User userAfterSave = userRepository.save(user);
         UserGetDTO userGetDTO = getUserGetDTO(userAfterSave);
@@ -33,19 +32,6 @@ public class UserService {
     public User findUserById(String id){
         User user = userRepository.findById(id).orElse(null);
         return user;
-    }
-    public void saveFileByUserId(String userId,String fileName) throws Exception {
-        User user = userRepository.findById(userId).orElse(null);
-        if(user!=null){
-            FileData file = new FileData();
-            file.setLabel(fileName);
-            file.setDescription(fileName);
-            FileData fileSaved = fileRepository.save(file);
-            //user.addFile(fileSaved);
-            userRepository.save(user);
-        }else{
-            throw new Exception("save file for the current user id"+userId+" encountered an error");
-        }
     }
     public void deleteById(String id){
         User user = userRepository.findById(id).orElse(null);

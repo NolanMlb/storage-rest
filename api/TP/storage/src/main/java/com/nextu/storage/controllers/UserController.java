@@ -66,20 +66,6 @@ public class UserController {
                 roles));
     }
 
-    @PostMapping(value = "/{id}/file")
-    public ResponseEntity<String> saveFile(@PathVariable String id,@RequestParam MultipartFile file){
-        String messageError = "";
-        try{
-            String fileName = storagService.save(file);
-            userService.saveFileByUserId(id,fileName);
-            return ResponseEntity.ok(fileName);
-        } catch (Exception e){
-            messageError = e.getMessage();
-        }
-        return ResponseEntity.badRequest().body(messageError);
-    }
-
-
     @PatchMapping(value = "/{id}",produces = { "application/json", "application/xml" })
     public ResponseEntity<UserGetDTO> update(@PathVariable String id, @RequestBody UserCreateDTO userCreateDTO){
         User user = new User();

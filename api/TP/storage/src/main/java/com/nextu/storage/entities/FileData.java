@@ -4,6 +4,7 @@ package com.nextu.storage.entities;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Version;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
@@ -14,4 +15,7 @@ public class FileData {
     private String id;
     private String label;
     private String description;
+
+    @Version
+    private Long version;
 }
