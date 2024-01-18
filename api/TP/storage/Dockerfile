@@ -1,6 +1,6 @@
 FROM eclipse-temurin:21
 RUN apt-get update && apt-get install -y curl
-COPY target/storage-0.0.1-SNAPSHOT.jar /app.jar
+COPY target/storage-0.0.4-SNAPSHOT.jar /app.jar
 ENV MONGO_HOST="mongodb"
 ENV MONGO_PORT="27017"
 ENV REACT_HOST="app-react"
