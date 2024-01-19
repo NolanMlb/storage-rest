@@ -1,6 +1,7 @@
 package com.nextu.storage.controllers;
 
 import com.nextu.storage.dto.BucketDTO;
+import com.nextu.storage.entities.FileData;
 import com.nextu.storage.entities.User;
 import com.nextu.storage.services.BucketService;
 import com.nextu.storage.services.StoragService;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.*;
 import com.nextu.storage.entities.Bucket;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -40,7 +43,6 @@ public class BucketController {
 
     @GetMapping(value = "/{idBucket}", produces = { "application/json", "application/xml" })
     public ResponseEntity<Bucket> getFilesByIdBucket(@PathVariable String idBucket) {
-        System.out.println("idBucket: "+idBucket);
         return ResponseEntity.ok(bucketService.findById(idBucket));
     }
 
@@ -52,18 +54,20 @@ public class BucketController {
         return ResponseEntity.ok(user.getBuckets());
     }
 
-    @PostMapping(value = "/{id}/file")
-    public ResponseEntity<String> saveFile(@PathVariable String id,@RequestParam("file") MultipartFile file){
-        String messageError = "";
-        try{
-            String fileName = storagService.save(file);
-            System.out.println("fileName: "+fileName);
-            bucketService.saveFileByBucketId(id,fileName);
-            return ResponseEntity.ok(fileName);
-        } catch (Exception e){
-            messageError = e.getMessage();
+    @PostMapping(value = "/{id}/files")
+    public ResponseEntity<List<FileData>> saveFiles(@PathVariable String id, @RequestParam("files") MultipartFile[] files) {
+        List<FileData> filesData = new ArrayList<>();
+
+        try {
+            for (MultipartFile file : files) {
+                String fileName = storagService.save(file);
+                FileData fileData = bucketService.saveFileByBucketId(id, fileName);
+                filesData.add(fileData);
+            }
+            return ResponseEntity.ok(filesData);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Collections.emptyList());
         }
-        return ResponseEntity.badRequest().body(messageError);
     }
 
     @PutMapping(value = "/{bucketId}", produces = { "application/json", "application/xml" })
