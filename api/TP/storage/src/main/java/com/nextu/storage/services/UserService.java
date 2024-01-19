@@ -48,4 +48,8 @@ public class UserService {
         return userGetDTO;
     }
 
+    public boolean checkIfUserAlreadyExist(String login){
+        return userRepository.findByLogin(login) !=null;
+    }
+
 }
