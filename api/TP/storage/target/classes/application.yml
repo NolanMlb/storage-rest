@@ -9,7 +9,7 @@ nextu:
   app:
     jwtSecret: xhxhh137373uddjshkjqshfkjqhkfhilieufizefhiu
     refreshJwtSecret: xhxhh137373uddjshkjqshfkjqhkfhilieufizefhiu1
-    jwtExpirationMs: 3600000
+    jwtExpirationMs: 1000
     jwtRefreshExpirationMs: 86400000
 server:
   port: 8088

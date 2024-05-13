@@ -31,19 +31,4 @@ public class BucketService {
     public Bucket findById(String id) {
         return bucketRepository.findById(id).orElseGet(null);
     }
-
-    public FileData saveFileByBucketId(String bucketId,String fileName) throws Exception {
-        Bucket bucket = bucketRepository.findById(bucketId).orElse(null);
-        if(bucket!=null){
-            FileData file = new FileData();
-            file.setLabel(fileName);
-            file.setDescription(fileName);
-            FileData fileSaved = fileRepository.save(file);
-            bucket.addFile(fileSaved);
-            bucketRepository.save(bucket);
-            return fileSaved;
-        }else{
-            throw new Exception("save file for the current user id"+bucketId+" encountered an error");
-        }
-    }
 }

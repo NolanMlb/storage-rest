@@ -7,7 +7,7 @@ import com.nextu.storage.exceptions.UserContentException;
 import com.nextu.storage.payloads.LoginRequest;
 import com.nextu.storage.payloads.RefreshTokenRequest;
 import com.nextu.storage.payloads.response.JwtResponse;
-import com.nextu.storage.services.StoragService;
+import com.nextu.storage.services.StorageService;
 import com.nextu.storage.services.UserDetailsImpl;
 import com.nextu.storage.services.UserService;
 import com.nextu.storage.utils.JwtUtils;
@@ -16,7 +16,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +31,7 @@ import java.util.stream.Collectors;
 @RequestMapping(value = "/api/users")
 public class UserController {
     private final UserService userService;
-    private final StoragService storagService;
+    private final StorageService storageService;
     private final UserDetailsService userDetailsService;
     private final PasswordEncoder encoder;
     private final JwtUtils jwtUtils;
@@ -102,6 +101,14 @@ public class UserController {
                 userDetails.getUsername(),
                 userDetails.getFirstName(),
                 roles));
+    }
+
+    @PostMapping(value = "/logout",produces = { "application/json", "application/xml" })
+    public ResponseEntity<?> disconnectUser(HttpServletRequest request){
+        request.removeAttribute("Authorization");
+        request.getSession().invalidate();
+        SecurityContextHolder.clearContext();
+        return ResponseEntity.ok("User disconnected");
     }
 
     @PatchMapping(value = "/{id}",produces = { "application/json", "application/xml" })

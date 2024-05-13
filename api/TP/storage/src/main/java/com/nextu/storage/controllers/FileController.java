@@ -1,30 +1,26 @@
 package com.nextu.storage.controllers;
 
-import com.nextu.storage.dto.UserGetDTO;
 import com.nextu.storage.entities.Bucket;
+import com.nextu.storage.entities.FileData;
+import com.nextu.storage.repository.BucketRepository;
+import com.nextu.storage.repository.FileRepository;
 import com.nextu.storage.services.FileService;
-import com.nextu.storage.services.StoragService;
+import com.nextu.storage.services.StorageService;
 import com.nextu.storage.utils.FileUtils;
 import com.nextu.storage.utils.MimeTypeUtils;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
-import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -32,12 +28,15 @@ import java.nio.file.Paths;
 @Slf4j
 public class FileController {
     private final FileService fileService;
-    private final StoragService storagService;
+    private final FileRepository fileRepository;
+    private final StorageService storageService;
+    private final BucketRepository bucketRepository;
+
     @GetMapping(value = "/{name}")
     public ResponseEntity<?> find(@PathVariable String name){
         if(fileService.checkIfFileExist(name)){
             try {
-                File file = this.storagService.load(name);
+                File file = this.storageService.load(name);
                 var extension = FileUtils.getExtension(file.getName());
                 Path path = Paths.get(file.getAbsolutePath());
                 ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(path));

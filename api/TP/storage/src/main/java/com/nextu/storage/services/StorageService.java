@@ -8,6 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,11 +22,11 @@ import java.nio.file.Paths;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class StoragService {
+public class StorageService {
     @Value("${nextu.filestore}")
     private String SERVER_LOCATION;
     private Path root;
-    private final Logger logger = LoggerFactory.getLogger(StoragService.class);
+    private final Logger logger = LoggerFactory.getLogger(StorageService.class);
 
     @PostConstruct
     public void init() {
@@ -49,6 +51,11 @@ public class StoragService {
             throw new FileContentException("Could not store the file. Error: " + e.getMessage());
         }
     }
+
+    public void delete(String filename) throws IOException {
+        Files.delete(this.root.resolve(filename));
+    }
+
     public File load(String filename) throws IOException {
         return new File(SERVER_LOCATION + filename);
     }
