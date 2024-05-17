@@ -15,6 +15,8 @@ public class FileData {
     private String id;
     private String label;
     private String description;
+    private String extension;
+    private String createdAt;
 
     @Version
     private Long version;

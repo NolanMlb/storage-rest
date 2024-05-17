@@ -6,6 +6,7 @@ import com.nextu.storage.entities.User;
 import com.nextu.storage.repository.BucketRepository;
 import com.nextu.storage.repository.FileRepository;
 import com.nextu.storage.services.*;
+import com.nextu.storage.utils.FileUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -16,10 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import com.nextu.storage.entities.Bucket;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,7 +25,6 @@ import java.util.Optional;
 @Slf4j
 public class BucketController {
     private final BucketService bucketService;
-    private final BucketRepository bucketRepository;
     private final UserService userService;
     private final FileService fileService;
     private final FileRepository fileRepository;
@@ -64,8 +61,13 @@ public class BucketController {
 
         try {
             for (MultipartFile file : files) {
-                String fileName = storageService.save(file);
-                FileData fileData = fileService.saveFileByBucketId(id, fileName);
+                System.out.println("HERE");
+                String fileNameInFolder = storageService.save(file);
+                System.out.println("AFTER SAVE");
+                String createdAt = fileNameInFolder.split("\\.")[0];
+                String fileName = file.getOriginalFilename();
+                System.out.println("CREATED AT: " + fileName);
+                FileData fileData = fileService.saveFileByBucketId(id, fileName, createdAt);
                 filesData.add(fileData);
             }
             return ResponseEntity.ok(filesData);
@@ -94,8 +96,9 @@ public class BucketController {
                 return ResponseEntity.notFound().build();
             }
             fileRepository.deleteById(fileId);
-            String name = file.get().getLabel();
-            this.storageService.delete(name);
+            String createdAt = file.get().getCreatedAt();
+            String extension = file.get().getExtension();
+            this.storageService.delete(createdAt + "." + extension);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

@@ -28,13 +28,11 @@ import java.util.Optional;
 @Slf4j
 public class FileController {
     private final FileService fileService;
-    private final FileRepository fileRepository;
     private final StorageService storageService;
-    private final BucketRepository bucketRepository;
 
     @GetMapping(value = "/{name}")
     public ResponseEntity<?> find(@PathVariable String name){
-        if(fileService.checkIfFileExist(name)){
+        if(fileService.checkIfFileExist(name.split("\\.")[0])){
             try {
                 File file = this.storageService.load(name);
                 var extension = FileUtils.getExtension(file.getName());

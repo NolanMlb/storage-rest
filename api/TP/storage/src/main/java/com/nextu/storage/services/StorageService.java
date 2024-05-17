@@ -52,11 +52,12 @@ public class StorageService {
         }
     }
 
-    public void delete(String filename) throws IOException {
-        Files.delete(this.root.resolve(filename));
+    public void delete(String fileName) throws IOException {
+        Files.delete(this.root.resolve(fileName));
     }
 
     public File load(String filename) throws IOException {
+        System.out.println("load: "+filename);
         return new File(SERVER_LOCATION + filename);
     }
 }

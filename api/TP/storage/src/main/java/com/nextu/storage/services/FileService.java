@@ -4,6 +4,7 @@ import com.nextu.storage.entities.Bucket;
 import com.nextu.storage.entities.FileData;
 import com.nextu.storage.repository.BucketRepository;
 import com.nextu.storage.repository.FileRepository;
+import com.nextu.storage.utils.FileUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -14,16 +15,19 @@ import org.springframework.stereotype.Service;
 public class FileService {
     private final FileRepository fileRepository;
     private final BucketRepository bucketRepository;
-    public boolean checkIfFileExist(String fileName){
-        return fileRepository.findByLabel(fileName) !=null?true:false;
+    public boolean checkIfFileExist(String creationDate){
+        return fileRepository.findByCreatedAt(creationDate) !=null?true:false;
     }
 
-    public FileData saveFileByBucketId(String bucketId, String fileName) throws Exception {
+    public FileData saveFileByBucketId(String bucketId, String fileName, String createdAt) throws Exception {
         Bucket bucket = bucketRepository.findById(bucketId).orElse(null);
         if(bucket!=null){
             FileData file = new FileData();
-            file.setLabel(fileName);
+            file.setLabel(fileName.split("\\.")[0]);
             file.setDescription(fileName);
+            String extension = FileUtils.getExtension(fileName);
+            file.setCreatedAt(createdAt);
+            file.setExtension(extension);
             FileData fileSaved = fileRepository.save(file);
             bucket.addFile(fileSaved);
             bucketRepository.save(bucket);
