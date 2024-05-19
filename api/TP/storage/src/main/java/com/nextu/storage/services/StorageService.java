@@ -38,14 +38,12 @@ public class StorageService {
         }
     }
 
-    public String save(MultipartFile file) throws FileContentException {
-        return copyFile(file);
+    public void save(MultipartFile file, String fileNameInFolder) throws FileContentException {
+        copyFile(file, fileNameInFolder);
     }
-    private String copyFile(MultipartFile file) throws FileContentException {
-        var fileNameDest = FileUtils.generateStringFromDate(FileUtils.getExtension(file.getOriginalFilename()));
+    private void copyFile(MultipartFile file, String fileNameInFolder) throws FileContentException {
         try {
-            Files.copy(file.getInputStream(), this.root.resolve(fileNameDest));
-            return fileNameDest;
+            Files.copy(file.getInputStream(), this.root.resolve(fileNameInFolder));
         } catch (Exception e) {
             logger.error("exception happened when saving file {}",e.getMessage());
             throw new FileContentException("Could not store the file. Error: " + e.getMessage());
@@ -57,7 +55,6 @@ public class StorageService {
     }
 
     public File load(String filename) throws IOException {
-        System.out.println("load: "+filename);
         return new File(SERVER_LOCATION + filename);
     }
 }

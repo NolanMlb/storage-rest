@@ -31,4 +31,10 @@ public class Bucket {
         }
         this.files.add(file);
     }
+
+    public void removeFile(FileData file){
+        if(this.files!=null){
+            this.files.remove(file);
+        }
+    }
 }

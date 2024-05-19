@@ -27,26 +27,25 @@ import java.util.Optional;
 @RequestMapping("/api/files")
 @Slf4j
 public class FileController {
-    private final FileService fileService;
+    private final FileRepository fileRepository;
     private final StorageService storageService;
 
-    @GetMapping(value = "/{name}")
-    public ResponseEntity<?> find(@PathVariable String name){
-        if(fileService.checkIfFileExist(name.split("\\.")[0])){
-            try {
-                File file = this.storageService.load(name);
-                var extension = FileUtils.getExtension(file.getName());
-                Path path = Paths.get(file.getAbsolutePath());
-                ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(path));
-                return ResponseEntity
-                        .ok()
-                        .contentLength(path.toFile().length())
-                        .contentType(MediaType.parseMediaType(MimeTypeUtils.getMimeType(extension)))
-                        .body(resource);
-            } catch (Exception e) {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-            }
+    @GetMapping(value = "/{fileId}")
+    public ResponseEntity<?> find(@PathVariable String fileId){
+        Optional<FileData> fileData = fileRepository.findById(fileId);
+        String fileNameInFolder = fileData.get().getCreatedAt() + '_' + fileId + '.' + fileData.get().getExtension();
+        try {
+            File file = this.storageService.load(fileNameInFolder);
+            var extension = FileUtils.getExtension(file.getName());
+            Path path = Paths.get(file.getAbsolutePath());
+            ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(path));
+            return ResponseEntity
+                    .ok()
+                    .contentLength(path.toFile().length())
+                    .contentType(MediaType.parseMediaType(MimeTypeUtils.getMimeType(extension)))
+                    .body(resource);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-        return ResponseEntity.notFound().build();
     }
 }

@@ -17,7 +17,6 @@ import java.io.File;
 @Service
 public class BucketService {
     private final BucketRepository bucketRepository;
-    private final FileRepository fileRepository;
 
     public BucketDTO create(BucketDTO bucketDTO) {
         Bucket bucket = new Bucket();

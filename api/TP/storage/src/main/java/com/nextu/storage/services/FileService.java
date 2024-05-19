@@ -15,16 +15,12 @@ import org.springframework.stereotype.Service;
 public class FileService {
     private final FileRepository fileRepository;
     private final BucketRepository bucketRepository;
-    public boolean checkIfFileExist(String creationDate){
-        return fileRepository.findByCreatedAt(creationDate) !=null?true:false;
-    }
 
     public FileData saveFileByBucketId(String bucketId, String fileName, String createdAt) throws Exception {
         Bucket bucket = bucketRepository.findById(bucketId).orElse(null);
         if(bucket!=null){
             FileData file = new FileData();
             file.setLabel(fileName.split("\\.")[0]);
-            file.setDescription(fileName);
             String extension = FileUtils.getExtension(fileName);
             file.setCreatedAt(createdAt);
             file.setExtension(extension);

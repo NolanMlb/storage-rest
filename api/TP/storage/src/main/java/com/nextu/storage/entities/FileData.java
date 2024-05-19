@@ -14,7 +14,6 @@ public class FileData {
     @Id
     private String id;
     private String label;
-    private String description;
     private String extension;
     private String createdAt;
 
